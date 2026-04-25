@@ -26,7 +26,7 @@ export const PricingModal: React.FC<PricingModalProps> = ({ currentPlan = 'Free'
     // Normally you send `activationCode` to the API and it returns the plan.
     const code = activationCode.trim().toUpperCase();
     
-    if (code.includes('6M') || code.includes('YEAR') || code.length > 10) {
+    if (code.length > 20 && code.includes('-')) {
         onUpgrade('6_Months');
     } else {
         onUpgrade('1_Month');

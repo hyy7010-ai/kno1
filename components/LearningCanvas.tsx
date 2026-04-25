@@ -1162,7 +1162,7 @@ export const LearningCanvas: React.FC<LearningCanvasProps> = ({
                     }
                     md += `---\n\n`;
                 });
-                md += `*Powered by Kno & Gemini 3 - Spatial Knowledge OS*`;
+                md += `*Powered by Kno - Spatial Knowledge OS*`;
                 const blob = new Blob([md], { type: 'text/markdown' });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
@@ -2158,7 +2158,7 @@ export const LearningCanvas: React.FC<LearningCanvasProps> = ({
         setEdgeMenuPosition(null);
         
         try {
-            const getAI = () => new GoogleGenAI({ apiKey: process.env.API_KEY || "" });
+            const getAI = () => new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
             const inputs = nodes.map((n, i) => `${i+1}. ${n.title}: ${n.content}`).join('\n');
             const prompt = `Role: Knowledge Architect. Analyze the conceptual connection between these ${nodes.length} nodes:\n${inputs}\n\nProvide a deep neural dump of how these concepts interact, their dependencies, and hidden implications as a whole. Output JSON: { "title": "Neural Mapping: ${nodes.length} Concepts", "content": "Detailed analysis..." }. Respond entirely in ${systemLanguage || 'English'}.`;
             const response = await getAI().models.generateContent({ model: getModel('LogicGuard'), contents: prompt, config: { responseMimeType: 'application/json' } });
@@ -2801,7 +2801,7 @@ export const LearningCanvas: React.FC<LearningCanvasProps> = ({
         setLocalNodes(prev => [...prev, sparkNode]);
         setLocalEdges(prev => [...prev, sparkEdge]);
         try {
-             const getAI = () => new GoogleGenAI({ apiKey: process.env.API_KEY || "" });
+             const getAI = () => new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
              const prompt = `Role: Serendipity Engine. Concept A: "${selectedNode.title} - ${selectedNode.content ? selectedNode.content.substring(0, 200) : ''}" Concept B: "${randomCandidate.title} - ${randomCandidate.summary.join(' ').substring(0, 200)}" Task: Find a surprising connection. Output JSON: { "title": "The Connection", "insight": "Insight text." }. Respond entirely in ${systemLanguage || 'English'}.`;
              
              const stream = await getAI().models.generateContentStream({ model: getModel('LogicGuard'), contents: prompt, config: { responseMimeType: 'application/json' } });
@@ -2891,7 +2891,7 @@ export const LearningCanvas: React.FC<LearningCanvasProps> = ({
         setLocalNodes(prev => [...prev, placeholder]);
         setLocalEdges(prev => [...prev, ...newEdges]);
         try {
-            const getAI = () => new GoogleGenAI({ apiKey: process.env.API_KEY || "" });
+            const getAI = () => new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
             const inputs = targetNodes.map((n, i) => `Input ${i+1}: "${n.title}"`).join('\n');
             
             const stream = await getAI().models.generateContentStream({ model: getModel('LogicGuard'), contents: `Role: Collider. Inputs:\n${inputs}\nTask: Synthesis. Output JSON: { "title": "Title", "content": "Insight." }. Respond entirely in ${systemLanguage || 'English'}.`, config: { responseMimeType: 'application/json' } });
@@ -2980,7 +2980,7 @@ export const LearningCanvas: React.FC<LearningCanvasProps> = ({
         setLocalNodes(prev => [...prev, alchemyNode]);
         setLocalEdges(prev => [...prev, ...newEdges]);
         try {
-            const getAI = () => new GoogleGenAI({ apiKey: process.env.API_KEY || "" });
+            const getAI = () => new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
             const inputs = sourceNodes.map((n, i) => `Input ${i+1}: ${n.title} - ${n.content ? n.content.substring(0, 150) : ''}`).join('\n');
             const prompt = `Role: Alchemy Engine. Inputs:\n${inputs}\nTask: Fuse into cohesive structure. Output JSON: { "title": "Title", "content": "Output." }. Respond entirely in ${systemLanguage || 'English'}.`;
             
@@ -3038,7 +3038,7 @@ export const LearningCanvas: React.FC<LearningCanvasProps> = ({
         const isCollider = !isSpark && !isAlchemy;
         setLocalNodes(prev => prev.map(n => n.id === node.id ? { ...n, isThinking: true, title: "Regenerating..." } : n));
         try {
-            const getAI = () => new GoogleGenAI({ apiKey: process.env.API_KEY || "" });
+            const getAI = () => new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
             let promptContents = "";
             if (isCollider) {
                  const inputs = parents.map((n, i) => `Input ${i+1}: "${n.title}"`).join('\n');
