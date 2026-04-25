@@ -2007,7 +2007,7 @@ export const LearningCanvas: React.FC<LearningCanvasProps> = ({
                             folder: newFolderId,
                             theme: newThemeId
                         };
-                        onAddNote(newNote);
+                        if (onAddNote) onAddNote(newNote);
                         newNoteId = newNote.id;
                     }
                 }
@@ -2644,7 +2644,7 @@ export const LearningCanvas: React.FC<LearningCanvasProps> = ({
                         needsRevision: false,
                         theme: themeId
                     };
-                    onAddNote(newNote);
+                    if (onAddNote) onAddNote(newNote);
                     node.noteId = newNote.id; // Update the local node object being mapped
                 }
 
@@ -2752,7 +2752,7 @@ export const LearningCanvas: React.FC<LearningCanvasProps> = ({
             folder: node.folderId,
             theme: node.themeId
         };
-        onAddNote(newNote);
+        if (onAddNote) onAddNote(newNote);
     };
 
     const handleSpark = async () => {

@@ -1,7 +1,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { CanvasNode } from '../types';
-import { getImageAI } from '../services/geminiService';
+import { getImageAI, getSystemLanguage } from '../services/geminiService';
 
 // --- HELPER 1: Visual Matcher (Fallback) ---
 const getImageForKeyword = (text: string) => {
@@ -80,7 +80,18 @@ export const useNeuralDump = ({ onComplete, isLocked, onLocked }: UseNeuralDumpP
         const recognition = new SpeechRecognition();
         recognition.continuous = true;
         recognition.interimResults = true;
-        recognition.lang = 'en-US'; 
+        
+        // Map common app languages to BCP 47 language tags for Speech API
+        const sysLang = localStorage.getItem('system_language') || 'English';
+        const langMap: Record<string, string> = {
+            'English': 'en-US',
+            'Chinese': 'zh-CN',
+            'Spanish': 'es-ES',
+            'French': 'fr-FR',
+            'Japanese': 'ja-JP',
+            'German': 'de-DE'
+        };
+        recognition.lang = langMap[sysLang] || 'en-US'; 
 
         recognition.onresult = (event: any) => {
           let finalTranscript = '';

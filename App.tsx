@@ -1084,24 +1084,7 @@ const App: React.FC = () => {
             setShowAuth(false);
             setUser(loggedInUser);
             if (pendingPlan) {
-              if (loggedInUser.email === 'jzey805@gmail.com') {
-                const updateData: any = { plan: pendingPlan };
-                if (pendingPlan === 'Trial') {
-                  updateData.billingDueDate = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString();
-                } else if (pendingPlan === '1_Month') {
-                  updateData.billingDueDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
-                } else if (pendingPlan === '6_Months') {
-                  updateData.billingDueDate = new Date(Date.now() + 180 * 24 * 60 * 60 * 1000).toISOString();
-                } else {
-                  updateData.billingDueDate = null;
-                }
-                localStorage.setItem('localUserPlan', pendingPlan);
-                setCurrentUserPlan(pendingPlan);
-                if (userProfile) {
-                  setUserProfile({ ...userProfile, plan: pendingPlan, billingDueDate: updateData.billingDueDate });
-                }
-                alert(`Successfully upgraded to ${pendingPlan} plan for free!`);
-              } else if (pendingPlan === 'Free') {
+              if (pendingPlan === 'Free') {
                 localStorage.setItem('localUserPlan', 'Free');
                 setCurrentUserPlan('Free');
                 if (userProfile) {

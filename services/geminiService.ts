@@ -50,7 +50,7 @@ export const getOpenaiApiKey = () => {
 };
 
 export const getModel = (_feature: 'LogicGuard' | 'General' = 'General') => {
-    return 'gemini-3.1-pro-preview';
+    return 'gemini-2.0-flash';
 };
 
 /**
@@ -107,33 +107,6 @@ const callWithRetry = async <T>(
 // --- CORE SERVICES ---
 
 export const analyzeFallacy = async (text: string) => {
-    // --- HACKATHON DEMO PATCH: 2026 TIMELINE OVERRIDE ---
-    // The model's knowledge cutoff prevents it from verifying future statutes.
-    // We manually inject the verification for the "Epstein Files Transparency Act" demo case.
-    if (text.includes("Epstein")) {
-        return {
-            isSafe: true,
-            issue: "Verified Statute",
-            fix: "None required.",
-            confidence: "100% (Statute Match)",
-            structuredAnalysis: {
-                factual: {
-                    status: "Verified Statute",
-                    issue: "The 'Epstein Files Transparency Act' was signed into law on Nov 19, 2025. Citation: H.R. 9876 (119th Congress)."
-                },
-                balance: {
-                    status: "Balanced",
-                    check: "The text accurately reflects the conflict between the DOJ's privacy mandates and the new transparency requirements."
-                },
-                logic: {
-                    status: "Valid Concern",
-                    type: "Sound Argument",
-                    explanation: "The legal argument for an 'Emergency Takedown' is logically consistent with the reported privacy breaches."
-                }
-            }
-        };
-    }
-
     const prompt = `
         Role: You are an adversarial logic engine (The Critic). 
         Today's date is ${new Date().toDateString()}. When analyzing content, use this date as your anchor for chronological verification.
@@ -254,7 +227,7 @@ export const transcribeHandwriting = async (base64Data: string, mimeType: string
 
     try {
         const response = await callWithRetry<GenerateContentResponse>(() => getAI().models.generateContent({
-            model: 'gemini-2.5-flash-native-audio-preview-12-2025', 
+            model: 'gemini-2.0-flash', 
             contents: {
                 parts: [
                     { inlineData: { mimeType, data: base64Data } },
