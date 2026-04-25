@@ -1,7 +1,7 @@
 import express from "express";
 import path from "path";
 import { createServer as createViteServer } from "vite";
-import { YoutubeTranscript } from "youtube-transcript";
+import { getSubtitles } from 'youtube-captions-scraper';
 
 async function startServer() {
   const app = express();
@@ -40,8 +40,11 @@ async function startServer() {
       }
 
       try {
-        const transcript = await YoutubeTranscript.fetchTranscript(videoId);
-        const fullText = transcript.map((t) => t.text).join(" ");
+        const transcript = await getSubtitles({
+          videoID: videoId,
+          lang: 'en' // default lang
+        });
+        const fullText = transcript.map((t: any) => t.text).join(" ");
         res.json({ text: fullText });
       } catch (transcriptError: any) {
         console.warn(`Transcript failed for ${videoId}, falling back to Jina:`, transcriptError.message);
